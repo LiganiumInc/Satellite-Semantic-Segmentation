@@ -32,12 +32,12 @@
 
 ### List of Interesting libraries used
 
-| Library          | Logo                                                                | Description |
-| :--------------- |:-------------------------------------------------------------------:| -----------:|
-| Pytorch          |<img src="readme_images/pytorch.svg" alt="pytorch" width="150"/>     |             |
-| Torchmetrics     |<img src="readme_images/torchmetrics.svg" alt="pytorch" width="150"/>|             |
-| captum           |<img src="readme_images/captum.png" alt="pytorch" width="150"/>      |             |
-| codecarbon       |<img src="readme_images/codecarbon.jpg" alt="pytorch" width="150"/>  |             |
+| Library      | Logo                                                                           | Description |
+| :------------|:------------------------------------------------------------------------------:| -----------:|
+| Pytorch      |<img src="readme_images/pytorch.svg" alt="pytorch" width="150" height="100"/>   |             |
+| Torchmetrics |<img src="readme_images/torchmetrics.svg" alt="pytorch" width="150" height="100"/>|           |
+| captum       |<img src="readme_images/captum.png" alt="pytorch" width="150" height="100"/>    |             |
+| codecarbon   |<img src="readme_images/codecarbon.jpg" alt="pytorch" width="150" height="100"/>|             |
 
 ### References
 

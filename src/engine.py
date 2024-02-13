@@ -28,23 +28,25 @@ def train_step(model: Module, data: tuple, optimizer: Optimizer, criterion, metr
     inputs, targets = data
     # print("targets : ", targets, targets.shape)
     inputs, targets = inputs.to(device), targets.to(device)
+    
     optimizer.zero_grad()
 
     outputs = model(inputs)
     
     # Calculate loss
-    loss = criterion(outputs, targets)
+    loss = criterion(outputs, targets.to(torch.long))
 
     # Backward pass and optimization
     loss.backward()
+    
     optimizer.step()
 
     # Update and log metrics
-    preds = torch.argmax(outputs, dim=1)
+    # preds = torch.argmax(outputs, dim=1)
     # print("preds : ", preds, preds.shape)
     
     for metric_name, metric in metrics.items():
-        metric.update(preds, targets.to(torch.long)) # targets.to(torch.long) is added to have integer type for targets as it is for the preds
+        metric.to(device).update(outputs, targets.to(torch.long)) # targets.to(torch.long) is added to have integer type for targets as it is for the preds
         # wandb.log({f'Train/{metric_name}': metric.compute()})
 
     return loss.item(), metrics 
@@ -74,9 +76,9 @@ def val_step(model: Module, data: tuple, criterion, metrics: dict, device: torch
     loss = criterion(outputs, targets)
 
     # Update and log metrics
-    preds = torch.argmax(outputs, dim=1)
+    # preds = torch.argmax(outputs, dim=1)
     for metric_name, metric in metrics.items():
-        metric.update(preds, targets.to(torch.long))
+        metric.to(device).update(outputs, targets.to(torch.long))
         # wandb.log({f'Validation/{metric_name}': metric.compute()})
 
     return loss.item(), metrics

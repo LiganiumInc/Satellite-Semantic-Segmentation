@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-import torchinfo
+
 from torchinfo import summary
 
 """ Convolutional block:

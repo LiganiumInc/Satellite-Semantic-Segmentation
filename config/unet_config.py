@@ -2,9 +2,13 @@ import torch
 import torch.nn as nn
 import torchmetrics
 
+
+
 class unet_config:
     
     global_seed = 42
+    
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     
     NUM_CLASSES = 6                          # Number of classes in the dataset
     
@@ -18,29 +22,18 @@ class unet_config:
     MODEL_SAVE_FOLDER = 'MODELS_REGISTER'
     
     # Training
-    NUM_EPOCHS = 10
+    NUM_EPOCHS = 100
     BATCH_SIZE = 32
     LEARNING_RATE = 0.001
-    LOSS_FN = nn.CrossEntropyLoss()
+    class_weights = [ 1.27769539,  0.31187535,  1.7162232 ,  1.26614547,  1.64332638, 33.40421679]
+    LOSS_FN = nn.CrossEntropyLoss(weight=torch.tensor(class_weights,dtype=torch.float,device = DEVICE),reduction='mean')
     OPTIMIZER = torch.optim.Adam
     LOGS_DIR = 'runs/unet_logs'
     METRICS = {'accuracy': torchmetrics.Accuracy(task="multiclass" ,num_classes=NUM_CLASSES),
                'dice': torchmetrics.Dice(num_classes=NUM_CLASSES),
                'JaccardIndex': torchmetrics.JaccardIndex(task="multiclass",num_classes=NUM_CLASSES)}
 
-class config_attention_unet:
-    ROOT = '../../DubaiDataset/'               # Folder where to store the dataset 
-    NUM_CLASSES = 6                          # Number of classes in the dataset
-    TRAIN_SIZE = 0.7
-    VAL_SIZE = 0.2
-    TEST_SIZE = 0.1
-    NUM_EPOCHS = 10
-    BATCH_SIZE = 32
-    PATCH_SIZE = 256
-    LEARNING_RATE = 0.001
-    MODEL_NAME = 'attention_unet_model.pth'
-    MODEL_SAVE_FOLDER = 'MODELS_REGISTER/'
-    LOGS_DIR = 'runs/attention_unet_logs'
+
 
 
 

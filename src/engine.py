@@ -27,14 +27,14 @@ def train_step(model: Module, data: tuple, optimizer: Optimizer, criterion, metr
     model.train()
     inputs, targets = data
     # print("targets : ", targets, targets.shape)
-    inputs, targets = inputs.to(device), targets.to(device)
+    inputs, targets = inputs.to(device), torch.tensor(targets, dtype=torch.long, device=device)
     
     optimizer.zero_grad()
 
     outputs = model(inputs)
     
     # Calculate loss
-    loss = criterion(outputs, targets.to(torch.long))
+    loss = criterion(outputs, targets)
 
     # Backward pass and optimization
     loss.backward()
@@ -42,11 +42,11 @@ def train_step(model: Module, data: tuple, optimizer: Optimizer, criterion, metr
     optimizer.step()
 
     # Update and log metrics
-    # preds = torch.argmax(outputs, dim=1)
-    # print("preds : ", preds, preds.shape)
-    
+    probs = torch.softmax(outputs, dim=1)
+    masks_pred = torch.argmax(probs, dim=1)
+
     for metric_name, metric in metrics.items():
-        metric.to(device).update(outputs, targets.to(torch.long)) # targets.to(torch.long) is added to have integer type for targets as it is for the preds
+        metric.to(device).update(masks_pred, targets) # targets.to(torch.long) is added to have integer type for targets as it is for the preds
         # wandb.log({f'Train/{metric_name}': metric.compute()})
 
     return loss.item(), metrics 
@@ -68,7 +68,7 @@ def val_step(model: Module, data: tuple, criterion, metrics: dict, device: torch
     """
     model.eval()
     inputs, targets = data
-    inputs, targets = inputs.to(device), targets.to(device)
+    inputs, targets = inputs.to(device), torch.tensor(targets, dtype=torch.long, device=device)
 
     outputs = model(inputs)
     
@@ -76,9 +76,10 @@ def val_step(model: Module, data: tuple, criterion, metrics: dict, device: torch
     loss = criterion(outputs, targets)
 
     # Update and log metrics
-    # preds = torch.argmax(outputs, dim=1)
+    probs = torch.softmax(outputs, dim=1)
+    masks_pred = torch.argmax(probs, dim=1)
     for metric_name, metric in metrics.items():
-        metric.to(device).update(outputs, targets.to(torch.long))
+        metric.to(device).update(masks_pred, targets)
         # wandb.log({f'Validation/{metric_name}': metric.compute()})
 
     return loss.item(), metrics
@@ -119,7 +120,7 @@ def train(model: Module, train_loader: DataLoader, val_loader: DataLoader,
         model.train()
         train_loss = 0.0
 
-        for data in tqdm(train_loader):
+        for data in train_loader:
             loss_batch, train_metrics = train_step(model, data, optimizer, criterion, train_metrics, device)
             train_loss += loss_batch
 
@@ -137,7 +138,7 @@ def train(model: Module, train_loader: DataLoader, val_loader: DataLoader,
         val_loss = 0.0
 
         with torch.no_grad():
-            for data in tqdm(val_loader):
+            for data in val_loader:
                 loss_batch, val_metrics = val_step(model, data, criterion, val_metrics, device)
                 val_loss += loss_batch
 

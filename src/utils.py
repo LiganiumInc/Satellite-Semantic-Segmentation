@@ -1,6 +1,8 @@
 import torch
 import os
 import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
+from collections import Counter
 from matplotlib import pyplot as plt
 import copy
 from patchify import patchify
@@ -139,6 +141,35 @@ def display_random_image_and_mask(images, masks, tensorboard_writer=None):
         # tensorboard_writer.add_image("Random Image and Mask", torch.cat([image_tensor, mask_tensor.unsqueeze(0)], dim=0))
     
 
+def calculate_class_weights(training_masks, num_classes):
+    """
+    Calculate class weights using scikit-learn's compute_class_weight.
+
+    Parameters:
+    - training_masks (list of numpy arrays): List of training masks, each represented as a numpy array.
+    - num_classes (int): Number of classes in the segmentation problem.
+
+    Returns:
+    - class_weights (numpy array): Array containing class weights based on inverse class frequencies.
+    """
+
+    # Concatenate and flatten all masks into a single 1D array for counting
+    all_labels = np.concatenate([mask.flatten() for mask in training_masks])
+
+    # Compute class weights using scikit-learn's compute_class_weight
+    class_labels = np.arange(num_classes)
+    
+    class_weights = compute_class_weight(class_weight = 'balanced',  classes = class_labels, y = all_labels)
+
+    return class_weights
+
+# Example usage:
+# Replace this with your actual training masks
+# training_masks = [...]
+# weights = calculate_class_weights(training_masks)
+# print("Inverse Class Frequencies (Weights):", weights)
+
+
 def print_train_time(start, end, device=None):
     """Prints difference between start and end time.
 
@@ -203,7 +234,7 @@ def save_model(model: torch.nn.Module,
              f=model_save_path)
     
 
-def load_model(model_save_path, model_name):
+def load_model(model_save_path, model_name, device):
     """
     Loads a PyTorch model from a specified path.
 
@@ -222,7 +253,7 @@ def load_model(model_save_path, model_name):
         if os.path.exists(model_path):
             try:
                 # Load the model
-                model = torch.load(model_path)
+                model = torch.load(model_path, map_location=torch.device(device))
                 print(f"Model '{model_name}' loaded successfully from '{model_path}'.")
                 return model
             except Exception as e:

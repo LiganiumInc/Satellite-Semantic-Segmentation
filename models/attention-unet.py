@@ -1,6 +1,7 @@
 
 import torch
 import torch.nn as nn
+from torchinfo import summary
 
 class conv_block(nn.Module):
     def __init__(self, in_c, out_c):
@@ -71,20 +72,20 @@ class decoder_block(nn.Module):
         return x
 
 class attention_unet(nn.Module):
-    def __init__(self):
+    def __init__(self, in_channels, n_classes, level_channels, bottleneck_channel):
         super().__init__()
 
-        self.e1 = encoder_block(3, 64)
-        self.e2 = encoder_block(64, 128)
-        self.e3 = encoder_block(128, 256)
+        self.e1 = encoder_block(in_channels, level_channels[0])
+        self.e2 = encoder_block(level_channels[0], level_channels[1])
+        self.e3 = encoder_block(level_channels[1], level_channels[2])
 
-        self.b1 = conv_block(256, 512)
+        self.b1 = conv_block(level_channels[2], bottleneck_channel)
 
-        self.d1 = decoder_block([512, 256], 256)
-        self.d2 = decoder_block([256, 128], 128)
-        self.d3 = decoder_block([128, 64], 64)
+        self.d1 = decoder_block([bottleneck_channel, level_channels[2]], level_channels[2])
+        self.d2 = decoder_block([level_channels[2], level_channels[1]], level_channels[1])
+        self.d3 = decoder_block([level_channels[1], level_channels[0]], level_channels[0])
 
-        self.output = nn.Conv2d(64, 1, kernel_size=1, padding=0)
+        self.output = nn.Conv2d(level_channels[0], n_classes, kernel_size=1, padding=0)
 
     def forward(self, x):
         s1, p1 = self.e1(x)
@@ -102,7 +103,14 @@ class attention_unet(nn.Module):
 
 
 if __name__ == "__main__":
-    x = torch.randn((8, 3, 256, 256))
-    model = attention_unet()
-    output = model(x)
-    print(output.shape)
+    
+    inputs = torch.randn((2, 3, 256, 256))
+    in_channels = 3
+    n_classes = 6
+    level_channels = [64, 128, 256]
+    bottleneck_channel = 512
+
+    model = attention_unet(in_channels = in_channels , n_classes = n_classes, \
+        level_channels = level_channels, bottleneck_channel = bottleneck_channel)
+    
+    summary(model, input_size=inputs.shape)

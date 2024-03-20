@@ -60,15 +60,19 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
 * For evaluation metrics I employed torchmetrics library with predefined metrics : 
     * `Accuracy`
          ```math
-           \text{Accuracy} = \frac{1}{N}\sum_i^N 1(y_i = \hat{y}_i) \\
-
-            \text{Where } y \text{ is a tensor of target values, and } \hat{y} \text{ is a tensor of predictions}
+           \text{Accuracy} = \frac{1}{N}\sum_i^N 1(y_i = \hat{y}_i) 
+        ```
+        <br />
+        ```math
+              \text{Where } y \text{ is a tensor of target values, and } \hat{y} \text{ is a tensor of predictions}
         ```
 
     * `Dice`
         ```math
-            \text{Dice} = \frac{\text{2 * TP}}{\text{2 * TP} + \text{FP} + \text{FN}} \\
-
+            \text{Dice} = \frac{\text{2 * TP}}{\text{2 * TP} + \text{FP} + \text{FN}} 
+        ```
+        <br />
+        ```math 
             \text{Where } TP \text{ and } FP   \text{ represent the number of true positives and
             false positives respecitively.}
         ```
@@ -89,10 +93,6 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
 ### CO2 Emissions with codecarbon
 
 
-### Models Explainability with Captum
-
-
-
 ### How to reproduce the project
 
 * clone the repo :
@@ -109,14 +109,13 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
 | :------------|:------------------------------------------------------------------------------:| -----------:|
 | Pytorch      |<img src="readme_images/pytorch.svg" alt="pytorch" width="150" height="100"/>   |             |
 | Torchmetrics |<img src="readme_images/torchmetrics.svg" alt="pytorch" width="150" height="100"/>|           |
-| captum       |<img src="readme_images/captum.png" alt="pytorch" width="150" />    |             |
 | codecarbon   |<img src="readme_images/codecarbon.jpg" alt="pytorch" width="150" height="100"/>|             |
 
 ### References
 
 
 ### License
-This project is released under [GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html)
+This project is licensed under the MIT License.
 
 
  

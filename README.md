@@ -63,19 +63,19 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
            \text{Accuracy} = \frac{1}{N}\sum_i^N 1(y_i = \hat{y}_i) 
         ```
         <br />
-        ```math
-              \text{Where } y \text{ is a tensor of target values, and } \hat{y} \text{ is a tensor of predictions}
-        ```
+    ```math
+            \text{Where } y \text{ is a tensor of target values, and } \hat{y} \text{ is a tensor of predictions}
+    ```
 
     * `Dice`
         ```math
             \text{Dice} = \frac{\text{2 * TP}}{\text{2 * TP} + \text{FP} + \text{FN}} 
         ```
         <br/>
-        ```math 
-            \text{Where } TP \text{ and } FP   \text{ represent the number of true positives and
-            false positives respecitively.}
-        ```
+    ```math 
+        \text{Where } TP \text{ and } FP   \text{ represent the number of true positives and
+        false positives respecitively.}
+    ```
 
     * `Jaccard index (iou)`
         The `Jaccard index`_ (also known as the intersetion over union or jaccard similarity coefficient) is an statistic that can be used to determine the similarity and diversity of a sample set. It is defined as the size of the intersection divided by the union of the sample sets:

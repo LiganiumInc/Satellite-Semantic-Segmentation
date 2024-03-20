@@ -60,7 +60,9 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
 * For evaluation metrics I employed torchmetrics library with predefined metrics : 
     * `Accuracy`
          ```math
-           \text{Accuracy} = \frac{1}{N}\sum_i^N 1(y_i = \hat{y}_i) 
+           \text{Accuracy} = \frac{1}{N}\sum_i^N 1(y_i = \hat{y}_i) \\\\
+
+             \text{Where } y \text{ is a tensor of target values, and } \hat{y} \text{ is a tensor of predictions}
         ```
         <br />
         ```math
@@ -69,9 +71,12 @@ For a comprehensive understanding of Attention U-Net, refer to the relevant arti
 
     * `Dice`
         ```math
-            \text{Dice} = \frac{\text{2 * TP}}{\text{2 * TP} + \text{FP} + \text{FN}} 
+            \text{Dice} = \frac{\text{2 * TP}}{\text{2 * TP} + \text{FP} + \text{FN}} \\\\
+
+             \text{Where } TP \text{ and } FP   \text{ represent the number of true positives and
+            false positives respecitively.}
         ```
-        <br />
+        <br/>
         ```math 
             \text{Where } TP \text{ and } FP   \text{ represent the number of true positives and
             false positives respecitively.}

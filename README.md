@@ -1,7 +1,8 @@
 
 
 # A Satellite Semantic Segmentation Project with Pytorch using Unet and Attention Unet
-(project in development)
+
+#### Note : This work is currently in progress 
 
 
 ### Introduction

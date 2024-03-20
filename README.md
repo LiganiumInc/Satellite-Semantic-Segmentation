@@ -48,8 +48,8 @@ For detailed insights into the U-Net architecture, refer to the original article
 * Moving on to Attention U-Net, this variant enhances the U-Net model by incorporating attention mechanisms. These mechanisms enable the model to selectively focus on specific regions of interest during the segmentation process, improving accuracy and robustness.
 
 ![Attention U-Net Architecture](readme_images/att_unet.png)
-<!-- ![Attention Module](readme_images/attentionmodule.png) -->
-<img src="readme_images/attentionmodule.png" alt="Attention Module" height="250" width="400">
+![Attention Module](readme_images/attentionmodule.png)
+
 
 For a comprehensive understanding of Attention U-Net, refer to the relevant article: [Attention U-Net: Learning Where to Look for the Pancreas](https://arxiv.org/abs/1804.03999)
 
